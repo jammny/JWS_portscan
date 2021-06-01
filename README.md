@@ -4,8 +4,8 @@
 ### 用法
 依赖安装：pip3 install -r requriement.txt
 
-支持参数：python3 JWS_fofascan.py --help
+支持参数：python3 JWS_portscan.py --help
 
-脚本运行：python3 JWS_fofascan.py --host=127.0.0.1
+脚本运行：python3 JWS_portscan.py --host=127.0.0.1
 
 ![截图](https://github.com/jammny/JWS_portscan/blob/main/pic.jpg)
