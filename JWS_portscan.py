@@ -113,14 +113,20 @@ if __name__ == "__main__":
         with open(args.file, mode="r", encoding='utf-8') as f:
             c_list = f.readlines()
         for ip in c_list:
+            if args.fast:
+                port = args.fast
+            else:
+                port = args.port
             host = ip.strip("\n")
-            port = args.port
             thread = args.thread
             scan = PortScan(port, host, thread)
             scan.run()
     elif args.host:
+        if args.fast:
+            port = args.fast
+        else:
+            port = args.port
         host = args.host
-        port = args.port
         thread = args.thread
         scan = PortScan(port, host, thread)
         scan.run()
