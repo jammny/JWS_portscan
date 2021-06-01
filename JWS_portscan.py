@@ -10,6 +10,7 @@ from sys import stdout
 from colorama import init, Fore
 import argparse, os
 
+
 class PortScan:
     def __init__(self, port, host, thread):
         self.port = port
@@ -22,7 +23,7 @@ class PortScan:
         put = queue.put
         port = self.port
         split = port.split
-        if "," in port and "-" in port :
+        if "," in port and "-" in port:
             port_list = split(',')
             length = len(port_list)
             for i in range(0, length):
@@ -64,7 +65,7 @@ class PortScan:
             except:
                 pass
 
-    def save_result(self,):
+    def save_result(self, ):
         with open("result/{}.txt".format(self.host), mode='w', encoding='utf-8') as f:
             for result in self.result:
                 f.write(result)
@@ -88,6 +89,7 @@ class PortScan:
         self.save_result()
         print(Fore.MAGENTA + "[+] 结果保存路径：./result/{}.txt".format(self.host))
 
+
 if __name__ == "__main__":
     init(autoreset=True)  # 初始化，并且设置颜色设置自动恢复
     print(Fore.MAGENTA + r'''
@@ -97,9 +99,9 @@ if __name__ == "__main__":
   _   | | \ \/  \/ / \___ \______|  ___/ _ \| '__| __/ __|/ __/ _` | '_ \ 
  | |__| |  \  /\  /  ____) |     | |  | (_) | |  | |_\__ \ (_| (_| | | | |
   \____/    \/  \/  |_____/      |_|   \___/|_|   \__|___/\___\__,_|_| |_|
-                                                                          
+
                                                                             ——by jammny.2021.5.31
-    
+
     用法：python3 JWS_portscan.py -h
     ''')
     parser = argparse.ArgumentParser(description='用法：python3 JWS_portscan.py <host> <port>')
@@ -107,25 +109,19 @@ if __name__ == "__main__":
     parser.add_argument('--file', type=str, help="--file=targets.txt")
     parser.add_argument('--port', type=str, default="1-65535", help="--port=1-65535")
     parser.add_argument('--thread', type=str, default="3000", help="默认线程3000，--thread=3000")
-    parser.add_argument('--fast', type=str, default="80-89,442-443,888,1080,1214,5000-5010,5222,5900,5938,5984,6000-6010,6379,7000-7010,7070-7080,8000-8010,8080-8090,8222,8443,8545,8686,8888,9000-9100,9180,9200,9418,9999,10000,11115", help="默认线程3000，--thread=3000")
+
     args = parser.parse_args()
     if args.file:
         with open(args.file, mode="r", encoding='utf-8') as f:
             c_list = f.readlines()
         for ip in c_list:
-            if args.fast:
-                port = args.fast
-            else:
-                port = args.port
+            port = args.port
             host = ip.strip("\n")
             thread = args.thread
             scan = PortScan(port, host, thread)
             scan.run()
     elif args.host:
-        if args.fast:
-            port = args.fast
-        else:
-            port = args.port
+        port = args.port
         host = args.host
         thread = args.thread
         scan = PortScan(port, host, thread)
