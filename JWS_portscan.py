@@ -10,7 +10,6 @@ from sys import stdout
 from colorama import init, Fore
 import argparse, os
 
-
 class PortScan:
     def __init__(self, port, host, thread):
         self.port = port
@@ -57,7 +56,7 @@ class PortScan:
             try:
                 port = queue.get()
                 conn = socket(AF_INET, SOCK_STREAM)
-                conn.settimeout(1)
+                conn.settimeout(2)
                 conn.connect((self.host, port))
                 stdout.write(Fore.GREEN + "[+] {}/TCP OPEN\n".format(port))
                 conn.close()
@@ -73,26 +72,26 @@ class PortScan:
     def run(self):
         queue = self.add_queue()
         thread_pool = [Thread(target=self.tcp_scan, args=[queue]) for _ in range(self.thread)]
-        print(Fore.MAGENTA + '\n获取目标:{},线程数:{}'.format(self.host, self.thread))
+        print(Fore.GREEN + '\n获取目标:{},线程数:{}'.format(self.host, self.thread))
         s_time = time()
         for i in range(self.thread):
             thread_pool[i].start()
         for i in range(self.thread):
             thread_pool[i].join()
         e_time = time()
-        print(Fore.MAGENTA + "[+] 总计开放端口：{}".format(len(self.result)))
-        print(Fore.MAGENTA + '[+] 扫描结束！总共耗时{}'.format((e_time - s_time)))
+        print(Fore.GREEN + "[+] 总计开放端口：" + Fore.RED + "{}".format(len(self.result)))
+        print(Fore.GREEN + '[+] 扫描结束！总共耗时{}'.format((e_time - s_time)))
         if os.path.exists("result"):
             pass
         else:
             os.mkdir("result")
         self.save_result()
-        print(Fore.MAGENTA + "[+] 结果保存路径：./result/{}.txt".format(self.host))
+        print(Fore.GREEN + "[+] 结果保存路径：" + Fore.GREEN + "./result/{}.txt".format(self.host))
 
 
 if __name__ == "__main__":
     init(autoreset=True)  # 初始化，并且设置颜色设置自动恢复
-    print(Fore.MAGENTA + r'''
+    print(Fore.GREEN + r'''
        ___          _______       _____           _                       
       | \ \        / / ____|     |  __ \         | |                      
       | |\ \  /\  / / (___ ______| |__) |__  _ __| |_ ___  ___ __ _ _ __  
@@ -107,7 +106,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='用法：python3 JWS_portscan.py <host> <port>')
     parser.add_argument('--host', type=str, help="--host=127.0.0.1")
     parser.add_argument('--file', type=str, help="--file=targets.txt")
-    parser.add_argument('--port', type=str, default="1-65535", help="--port=1-65535")
+    parser.add_argument('--port', type=str, default="80-89,442-443,888,1080,1214,5000-5010,5222,5900,5938,5984,6000-6010,6379,7000-7010,7070-7080,8000-8010,8080-8090,8222,8443,8545,8686,8888,9000-9100,9180,9200,9418,9999,10000,11115", help="--port=1-65535")
     parser.add_argument('--thread', type=str, default="3000", help="默认线程3000，--thread=3000")
 
     args = parser.parse_args()
