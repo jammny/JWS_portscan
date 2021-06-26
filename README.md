@@ -4,13 +4,16 @@
 ### 用法
 依赖安装：pip3 install -r requriement.txt
 
-脚本运行：
+更多参数：python3 JWS_portscan.py --help
+
+常见操作：
+
 python3 JWS_portscan.py --host=127.0.0.1                          (默认情况下扫描常见开放web端口)
 
 python3 JWS_portscan.py --host=127.0.0.1 --port=1-65535           (全端口扫描)
 
 python3 JWS_portscan.py --file=targets.txt --port=80,8000-8080    (从文件中导入目标，进行扫描)  
 
-更多参数：python3 JWS_portscan.py --help
+
 
 ![截图](https://github.com/jammny/JWS_portscan/blob/main/pic.jpg)
